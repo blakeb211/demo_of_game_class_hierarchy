@@ -37,6 +37,10 @@ int main() {
     stuff_to_collide.push_back(&box);
     stuff_to_collide.push_back(&box2);
 
+    for (const auto& i : ent) {
+      printf("%s\n", magic(i->otype));
+    }
+
     for (const auto& i : stuff_to_draw) {
       i->draw();
     }
