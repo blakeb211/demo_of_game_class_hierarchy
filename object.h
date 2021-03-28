@@ -54,6 +54,10 @@ struct Object {
   Object() : id{TotalObjectCount++} {}
   Vec3 pos;
   unsigned long int id;
+  unsigned int long getTotalObjCount() { return TotalObjectCount; }
+  void decreaseTotalObjCount() { TotalObjectCount--; }
+
+ private:
   static unsigned long int TotalObjectCount;
 };
 
@@ -61,12 +65,12 @@ unsigned long int Object::TotalObjectCount = 0;
 
 struct Hero : Object, IUpdate, IDrawable, ICollide {
   Hero() { this->health = 100; }
-  void update() {
+  void IUpdate::update() {
     std::printf("hero (id %d) at pos (%s) update method called\n", id,
                 pos.toString().c_str());
   }
-  void draw() { std::printf("hero draw method called\n"); }
-  void onHit(unsigned char force, bool isDamaging) {
+  void IDrawable::draw() { std::printf("hero draw method called\n"); }
+  void ICollide::onHit(unsigned char force, bool isDamaging) {
     std::printf("hero with health %d hit with force %d and damage flag %d\n",
                 health, force, isDamaging);
   }
@@ -74,12 +78,12 @@ struct Hero : Object, IUpdate, IDrawable, ICollide {
 
 struct Box : Object, IUpdate, IDrawable, ICollide {
   Box() { this->health = 5; }
-  void update() {
+  void IUpdate::update() {
     std::printf("box (id %d) at pos (%s) update method called\n", id,
                 pos.toString().c_str());
   }
-  void draw() { std::printf("box draw method called\n"); }
-  void onHit(unsigned char force, bool isDamaging) {
+  void IDrawable::draw() { std::printf("box draw method called\n"); }
+  void ICollide::onHit(unsigned char force, bool isDamaging) {
     std::printf("box with health %d hit with force %d and damage flag %d\n",
                 health, force, isDamaging);
   }
