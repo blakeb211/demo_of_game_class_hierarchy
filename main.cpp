@@ -10,10 +10,8 @@ int main() {
   Hero h{};
   Box box{};
   Box box2{};
-  Vec3 v{2, 4, 6};
-  Vec3 v2{1, 2, 3};
-  box.pos = v;
-  h.pos = v2;
+  box.pos = 22;
+  h.pos = 23;
 
   {
     using std::vector;

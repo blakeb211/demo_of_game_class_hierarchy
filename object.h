@@ -4,39 +4,6 @@
 #include <map>
 #include <string>
 
-struct Vec3 {
-  Vec3() {
-    this->x = 0;
-    this->y = 0;
-    this->z = 0;
-  }
-  Vec3(float x, float y, float z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-  }
-  Vec3(Vec3& otherVec) {
-    this->x = otherVec.x;
-    this->y = otherVec.y;
-    this->z = otherVec.z;
-  }
-  std::string toString();
-  float x, y, z;
-};
-
-std::string Vec3::toString() {
-  char buf[100];
-  std::sprintf(buf, "x %f y %f z %f", this->x, this->y, this->z);
-
-  std::string s = std::string(buf);
-  return s;
-}
-
-// Triangle struct
-struct Tri {
-  Vec3 vert[3];
-};
-
 struct ICollide {
   ICollide() : health{0} {}
   virtual void onHit(unsigned char, bool) = 0;
@@ -59,7 +26,7 @@ struct Object {
 
   Object() : id{TotalObjectCount++}, otype{0} {}
   TYPE otype;
-  Vec3 pos;
+  float pos;
   unsigned long int id;
   unsigned int long getTotalObjCount() { return TotalObjectCount; }
   void decreaseTotalObjCount() { TotalObjectCount--; }
@@ -90,12 +57,11 @@ struct Hero : Object, IUpdate, IDrawable, ICollide {
     this->health = 100;
     this->otype = Object::TYPE::HERO;
   }
-  void IUpdate::update() {
-    std::printf("hero (id %d) at pos (%s) update method called\n", id,
-                pos.toString().c_str());
+  void IUpdate::update() override final {
+    std::printf("hero (id %d) at pos (%f) update method called\n", id, pos);
   }
-  void IDrawable::draw() { std::printf("hero draw method called\n"); }
-  void ICollide::onHit(unsigned char force, bool isDamaging) {
+  void IDrawable::draw() override final { std::printf("hero draw method called\n"); }
+  void ICollide::onHit(unsigned char force, bool isDamaging) override final {
     std::printf("hero with health %d hit with force %d and damage flag %d\n",
                 health, force, isDamaging);
   }
@@ -106,12 +72,12 @@ struct Box : Object, IUpdate, IDrawable, ICollide {
     this->health = 5;
     this->otype = Object::TYPE::BOX;
   }
-  void IUpdate::update() {
-    std::printf("box (id %d) at pos (%s) update method called\n", id,
-                pos.toString().c_str());
+  void IUpdate::update() override final {
+    std::printf("box (id %d) at pos (%f) update method called\n", id,
+                pos);
   }
-  void IDrawable::draw() { std::printf("box draw method called\n"); }
-  void ICollide::onHit(unsigned char force, bool isDamaging) {
+  void IDrawable::draw() override final { std::printf("box draw method called\n"); }
+  void ICollide::onHit(unsigned char force, bool isDamaging) override final {
     std::printf("box with health %d hit with force %d and damage flag %d\n",
                 health, force, isDamaging);
   }
